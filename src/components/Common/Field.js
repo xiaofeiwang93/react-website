@@ -32,7 +32,9 @@ class Field extends Component {
 						onBlur={this.props.onBlur}
 					/>
 				)}
-				<p className="help-block text-danger"></p>
+				<p className="help-block text-danger">
+					{this.props.touched && this.props.errors && <span>{this.props.errors}</span>}
+				</p>
 			</div>
 		);
 	}

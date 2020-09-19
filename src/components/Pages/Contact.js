@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Field from '../Common/Field';
 import { withFormik } from 'formik';
+import * as Yup from 'yup';
 
 const fields = {
 	sections: [
@@ -60,7 +61,12 @@ class Contact extends Component {
 						<h3 className="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
 					</div>
 					{/* <form id="contactForm" name="sentMessage" novalidate="novalidate" onSubmit={(e) => this.submitForm(e)}> */}
-					<form id="contactForm" name="sentMessage" novalidate="novalidate" onSubmit={this.props.handleSubmit}>
+					<form
+						id="contactForm"
+						name="sentMessage"
+						novalidate="novalidate"
+						onSubmit={this.props.handleSubmit}
+					>
 						<div className="row align-items-stretch mb-5">
 							{fields.sections.map((section, sectionIndex) => {
 								console.log('Rendering section', sectionIndex, 'with', section);
@@ -75,6 +81,8 @@ class Contact extends Component {
 													name={field.name}
 													onChange={this.props.handleChange}
 													onBlur={this.props.handleBlur}
+													touched={this.props.touched[field.name]}
+													errors={this.props.errors[field.name]}
 													// value={this.state[field.name]}
 													// onChange={(e) => this.setState({ [field.name]: e.target.value })}
 												/>
@@ -86,7 +94,11 @@ class Contact extends Component {
 						</div>
 						<div className="text-center">
 							<div id="success"></div>
-							<button className="btn btn-primary btn-xl text-uppercase" id="sendMessageButton" type="submit">
+							<button
+								className="btn btn-primary btn-xl text-uppercase"
+								id="sendMessageButton"
+								type="submit"
+							>
 								Send Message
 							</button>
 						</div>
@@ -115,6 +127,9 @@ export default withFormik({
 
 		return errors;
 	},
+	// validationSchema: Yup.object().shape({
+	// 	name: Yup.string().required('You must give us your name.'),
+	// }),
 	handleSubmit: (values, { setSubmitting }) => {
 		alert("You've submitted the form", JSON.stringify(values));
 	},
