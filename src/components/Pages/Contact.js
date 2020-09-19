@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Field from '../Common/Field';
-import { withFormik } from 'formik';
+import { withFormik, yupToFormErrors } from 'formik';
 import * as Yup from 'yup';
 
 const fields = {
@@ -116,20 +116,26 @@ export default withFormik({
 		phone: '',
 		message: '',
 	}),
-	validate: (values) => {
-		const errors = {};
+	// validate: (values) => {
+	// 	const errors = {};
 
-		Object.keys(values).map((v) => {
-			if (!values[v]) {
-				errors[v] = 'Required';
-			}
-		});
+	// 	Object.keys(values).map((v) => {
+	// 		if (!values[v]) {
+	// 			errors[v] = 'Required';
+	// 		}
+	// 	});
 
-		return errors;
-	},
-	// validationSchema: Yup.object().shape({
-	// 	name: Yup.string().required('You must give us your name.'),
-	// }),
+	// 	return errors;
+	// },
+	validationSchema: Yup.object().shape({
+		name: Yup.string().min(3, 'Minimum 3 characters').required('You must give us your name.'),
+		email: Yup.string().email('This is not a valid email').required('You must provide an email'),
+		phone: Yup.string()
+			.min(10, 'Please provide a valid phone number')
+			.max(15, 'Your phone number is too long')
+			.required('You must give us your phone number'),
+		message: Yup.string().min(50, 'More detailed information please').required('You must proivde some message'),
+	}),
 	handleSubmit: (values, { setSubmitting }) => {
 		alert("You've submitted the form", JSON.stringify(values));
 	},
